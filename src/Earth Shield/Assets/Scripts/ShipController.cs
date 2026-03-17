@@ -11,6 +11,10 @@ public class ShipController : MonoBehaviour
 
     public float maxSpeed = 10f;
 
+    public GameObject projectilePrefab;
+    public Transform firePoint;
+    public float fireForce = 15f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -27,6 +31,11 @@ public class ShipController : MonoBehaviour
         {
             rb.AddForce(transform.up * thrust);
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Fire();
+        }
     }
 
     void FixedUpdate()
@@ -35,5 +44,13 @@ public class ShipController : MonoBehaviour
         {
             rb.velocity = rb.velocity.normalized * maxSpeed;
         }
+    }
+
+    void Fire()
+    {
+        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+
+        Rigidbody2D projRb = projectile.GetComponent<Rigidbody2D>();
+        projRb.velocity = (Vector2)firePoint.up * 15f + rb.velocity;
     }
 }
