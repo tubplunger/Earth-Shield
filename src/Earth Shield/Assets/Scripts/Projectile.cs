@@ -16,9 +16,4 @@ public class Projectile : MonoBehaviour
         // destroyed after set time
         Destroy(gameObject, lifetime);
     }
-
-    void OnBecomeInvisible()
-    {
-        Destroy(gameObject);
-    }
 }

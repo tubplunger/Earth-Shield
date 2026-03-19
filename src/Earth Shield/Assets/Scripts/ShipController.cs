@@ -53,4 +53,12 @@ public class ShipController : MonoBehaviour
         Rigidbody2D projRb = projectile.GetComponent<Rigidbody2D>();
         projRb.velocity = (Vector2)firePoint.up * 15f + rb.velocity;
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Asteroid"))
+        {
+            GameManager.instance.GameOver();
+        }
+    }
 }
