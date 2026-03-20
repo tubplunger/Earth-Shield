@@ -5,6 +5,7 @@ using UnityEngine;
 public class ScreenWrap : MonoBehaviour
 {
     private Camera cam;
+    public float wrapMargin = 1.5f;
 
     void Start()
     {
@@ -18,27 +19,22 @@ public class ScreenWrap : MonoBehaviour
         float height = cam.orthographicSize;
         float width = height * cam.aspect;
 
-        float buffer = 0.5f;
+        float left = -width - wrapMargin;
+        float right = width + wrapMargin;
+        float top = height + wrapMargin;
+        float bottom = -height - wrapMargin;
 
-        // horizontal
-        if (pos.x > width + buffer)
-        {
-            pos.x = -width - buffer;
-        }
-        else if (pos.x < -width - buffer)
-        {
-            pos.x = width + buffer;
-        }
+        // Horizontal
+        if (pos.x > right)
+            pos.x = left;
+        else if (pos.x < left)
+            pos.x = right;
 
-        // vertical
-        if (pos.y > height + buffer)
-        {
-            pos.y = -height - buffer;
-        }
-        else if (pos.y < -height - buffer)
-        {
-            pos.y = height + buffer;
-        }
+        // Vertical
+        if (pos.y > top)
+            pos.y = bottom;
+        else if (pos.y < bottom)
+            pos.y = top;
 
         transform.position = pos;
     }
