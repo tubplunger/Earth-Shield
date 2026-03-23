@@ -4,10 +4,22 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    public AsteroidSize size;
+
+    public GameObject mediumPrefab;
+    public GameObject smallPrefab;
+
     public float minSpeed = 1f;
     public float maxSpeed = 3f;
 
     private Rigidbody2D rb;
+
+    public enum AsteroidSize
+    {
+        Large,
+        Medium,
+        Small
+    }
 
     void Start()
     {
@@ -28,13 +40,43 @@ public class Asteroid : MonoBehaviour
         if (collision.gameObject.CompareTag("Projectile"))
         {
             Destroy(collision.gameObject);
+
+            Split();
             Destroy(gameObject);
 
             GameManager.instance.AddScore(1);
         }
     }
 
-    void OnBecomeInvisible()
+    void Split()
+    {
+        if (size == AsteroidSize.Large)
+        {
+            SpawnChildren(mediumPrefab, 2);
+        }
+        else if (size == AsteroidSize.Medium)
+        {
+            SpawnChildren(smallPrefab, 2);
+        }
+        // small does nothing
+    }
+
+    void SpawnChildren(GameObject prefab, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            GameObject child = Instantiate(prefab, transform.position, Quaternion.identity);
+
+            Rigidbody2D childRb = child.GetComponent<Rigidbody2D>();
+
+            Vector2 randomDir = Random.insideUnitCircle.normalized;
+            float speed = Random.Range(minSpeed * 1.2f, maxSpeed * 1.5f);
+
+            childRb.velocity = randomDir * speed;
+        }
+    }
+
+    void OnBecameInvisible()
     {
         Destroy(gameObject);
     }

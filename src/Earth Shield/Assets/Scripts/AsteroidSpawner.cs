@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
 {
-    public GameObject asteroidPrefab;
+    public GameObject largeAsteroid;
+    public GameObject mediumAsteroid;
+    public GameObject smallAsteroid;
+
     public float spawnInterval = 2f;
     public float spawnDistance = 1.5f;
 
@@ -50,6 +53,17 @@ public class AsteroidSpawner : MonoBehaviour
 
         spawnPos *= spawnDistance;
 
-        Instantiate(asteroidPrefab, spawnPos, Quaternion.identity);
+        GameObject prefabToSpawn;
+
+        float rand = Random.value;
+
+        if (rand < 0.6f)
+            prefabToSpawn = largeAsteroid;
+        else if (rand < 0.85f) 
+            prefabToSpawn = mediumAsteroid;
+        else 
+            prefabToSpawn = smallAsteroid;
+
+        Instantiate(prefabToSpawn, spawnPos, Quaternion.identity);
     }
 }
