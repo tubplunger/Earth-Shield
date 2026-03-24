@@ -13,6 +13,7 @@ public class Asteroid : MonoBehaviour
     public float maxSpeed = 3f;
 
     private Rigidbody2D rb;
+    public Sprite[] possibleSprites;
 
     public enum AsteroidSize
     {
@@ -33,6 +34,13 @@ public class Asteroid : MonoBehaviour
         float speed = Random.Range(minSpeed, maxSpeed);
 
         rb.velocity = direction * speed;
+
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+
+        if (possibleSprites.Length > 0)
+        {
+            sr.sprite = possibleSprites[Random.Range(0, possibleSprites.Length)];
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)

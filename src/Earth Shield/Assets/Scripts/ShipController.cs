@@ -7,7 +7,11 @@ public class ShipController : MonoBehaviour
     public float thrust = 8f;
     public float rotationSpeed = 180f;
 
+    public float invincibilityTime = 2f;
+
     private Rigidbody2D rb;
+    private bool isInvincible = false;
+    private SpriteRenderer sr;
 
     public float maxSpeed = 10f;
 
@@ -18,6 +22,7 @@ public class ShipController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -56,9 +61,29 @@ public class ShipController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Asteroid"))
+        if (collision.gameObject.CompareTag("Asteroid") && !isInvincible)
         {
-            GameManager.instance.GameOver();
+            GameManager.instance.LoseLife();
+            StartCoroutine(Invincibility());
         }
+    }
+
+    IEnumerator Invincibility()
+    {
+        isInvincible = true;
+
+        float timer = 0f;
+
+        while (timer < invincibilityTime)
+        {
+            // flicker
+            sr.enabled = !sr.enabled;
+
+            yield return new WaitForSeconds(0.15f);
+            timer += 0.15f;
+        }
+
+        sr.enabled = true;
+        isInvincible = false;
     }
 }

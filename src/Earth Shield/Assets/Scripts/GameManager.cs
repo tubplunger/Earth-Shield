@@ -9,14 +9,21 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI livesText;
     public GameObject gameOverPanel;
 
     private int score = 0;
+    private int lives = 3;
     private bool isGameOver = false;
 
     void Awake()
     {
         instance = this;
+    }
+
+    void Start()
+    {
+        UpdateLivesUI();
     }
 
     public void AddScore(int amount)
@@ -25,7 +32,27 @@ public class GameManager : MonoBehaviour
 
         score += amount;
         scoreText.text = "Score: " + score;
-    } 
+    }
+    
+    public void LoseLife()
+    {
+        if (isGameOver) return;
+
+        lives--;
+        UpdateLivesUI();
+
+        if (lives <= 0)
+        {
+            GameOver();
+        }
+
+        Debug.Log("Life lost! Current lives: " + lives);
+    }
+
+    void UpdateLivesUI()
+    {
+        livesText.text = "Lives: " + lives;
+    }
 
     public void GameOver()
     {
