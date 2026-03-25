@@ -49,6 +49,8 @@ public class Asteroid : MonoBehaviour
         {
             Destroy(collision.gameObject);
 
+            AudioManager.instance.PlayExplosion();
+
             Split();
             Destroy(gameObject);
 
